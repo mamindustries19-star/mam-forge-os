@@ -139,7 +139,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               const active = pathname.startsWith(item.to);
               const Icon = item.icon;
               return (
-                <Link key={item.to} to={item.to} className={cn("flex items-center gap-2 rounded-md px-3 py-2 text-xs whitespace-nowrap", active ? "bg-accent text-accent-foreground" : "text-muted-foreground")}>
+                <Link key={item.to} to={item.to} preload="intent" className={cn("flex items-center gap-2 rounded-md px-3 py-2 text-xs whitespace-nowrap transition-colors", active ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground")}>
                   <Icon className="size-3.5" /> {item.label}
                 </Link>
               );

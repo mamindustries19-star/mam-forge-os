@@ -75,7 +75,7 @@ function NewQuotationPage() {
         notes: form.notes, terms: form.terms, valid_until: form.valid_until || null,
         status: "draft", created_by: user?.id,
       };
-      const { data: q, error } = await supabase.from("quotations").insert(insert).select().single();
+      const { data: q, error } = await supabase.from("quotations").insert(insert as any).select().single();
       if (error) throw error;
       const itemRows = items.filter(i => i.description).map((i, pos) => ({
         quotation_id: q.id, position: pos, description: i.description, hsn_code: i.hsn_code || null,

@@ -35,11 +35,16 @@ export function AppShell({ children }: { children: ReactNode }) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
       const [{ data: prof }, { data: roles }] = await Promise.all([
-        supabase.from("profiles").select("*").eq("id", user.id).maybeSingle(),
+        supabase.from("profiles").select("id,full_name,email,avatar_url").eq("id", user.id).maybeSingle(),
         supabase.from("user_roles").select("role").eq("user_id", user.id),
       ]);
       return { user, profile: prof, roles: roles?.map(r => r.role) ?? [] };
     },
+    staleTime: Infinity,
+    gcTime: Infinity,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
   });
 
   async function signOut() {

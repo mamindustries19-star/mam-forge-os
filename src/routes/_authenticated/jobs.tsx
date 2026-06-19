@@ -116,20 +116,24 @@ function Column({ stage, jobs }: { stage: JobStage; jobs: any[] }) {
   return (
     <div
       ref={setNodeRef}
-      className={`shrink-0 w-72 panel p-3 transition-colors ${isOver ? "ring-2 ring-primary" : ""}`}
+      className={`shrink-0 w-72 glass-panel p-3.5 transition-all border-border/80 ${
+        isOver ? "ring-2 ring-primary/35 bg-accent/20 border-primary/30 scale-[0.99]" : ""
+      }`}
     >
-      <div className="flex items-center justify-between mb-3 px-1">
-        <h3 className="font-display font-semibold text-sm">{JOB_STAGE_LABELS[stage]}</h3>
-        <span className="text-xs font-mono px-2 py-0.5 rounded bg-background/60 text-muted-foreground">
+      <div className="flex items-center justify-between mb-4 px-1">
+        <h3 className="font-display font-semibold text-sm text-foreground">
+          {JOB_STAGE_LABELS[stage]}
+        </h3>
+        <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-secondary/80 text-muted-foreground border border-border/40">
           {jobs.length}
         </span>
       </div>
-      <div className="space-y-2 min-h-[120px]">
+      <div className="space-y-2.5 min-h-[140px] max-h-[calc(100vh-14rem)] overflow-y-auto pr-0.5">
         {jobs.map((j) => (
           <JobCard key={j.id} job={j} />
         ))}
         {jobs.length === 0 && (
-          <div className="text-xs text-muted-foreground text-center py-6 border border-dashed border-border rounded-md">
+          <div className="text-[11px] text-muted-foreground text-center py-8 border border-dashed border-border/60 rounded-lg bg-background/10">
             Drop here
           </div>
         )}
@@ -149,24 +153,40 @@ function JobCard({ job }: { job: any }) {
       style={{
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
       }}
-      className={`p-3 rounded-md bg-background/60 border ${STAGE_TONE[job.stage as JobStage]} cursor-grab active:cursor-grabbing ${isDragging ? "opacity-50 z-50" : ""}`}
+      className={`p-3.5 rounded-lg bg-card/70 hover:bg-card border ${STAGE_TONE[job.stage as JobStage]} cursor-grab active:cursor-grabbing hover-lift transition-all ${
+        isDragging ? "opacity-40 scale-95 shadow-xl border-primary/40 z-50" : ""
+      }`}
     >
-      <div className="text-xs font-mono text-muted-foreground">{job.job_number}</div>
-      <div className="font-medium text-sm mt-1">{job.title}</div>
-      <div className="text-xs text-muted-foreground truncate">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[10px] font-mono text-muted-foreground">{job.job_number}</span>
+        {overdue && (
+          <span className="size-2 rounded-full bg-destructive animate-ping" title="Overdue!" />
+        )}
+      </div>
+      <div className="font-medium text-sm mt-1.5 text-foreground leading-snug">{job.title}</div>
+      <div className="text-xs text-muted-foreground truncate mt-1">
         {job.customers?.company_name || "—"}
       </div>
-      <div className="flex items-center justify-between mt-2 text-[11px]">
-        <span className="text-muted-foreground">
+      <div className="flex items-center justify-between mt-3 text-[11px] border-t border-border/40 pt-2.5">
+        <span
+          className="text-muted-foreground font-medium truncate max-w-[130px]"
+          title={job.material}
+        >
           {job.material || "—"} · Qty {job.quantity}
         </span>
-        {job.value > 0 && <span className="font-mono">{inr(job.value)}</span>}
+        {job.value > 0 && (
+          <span className="font-mono font-semibold text-foreground">{inr(job.value)}</span>
+        )}
       </div>
       {job.deadline && (
         <div
-          className={`flex items-center gap-1 mt-2 text-[10px] ${overdue ? "text-destructive" : "text-muted-foreground"}`}
+          className={`inline-flex items-center gap-1 mt-2.5 px-2 py-0.5 rounded text-[9px] font-medium border ${
+            overdue
+              ? "bg-destructive/15 text-destructive border-destructive/25 shadow-[0_0_8px_rgba(var(--destructive),0.05)]"
+              : "bg-secondary/60 text-muted-foreground border-border/50"
+          }`}
         >
-          {overdue ? <AlertCircle className="size-3" /> : <Calendar className="size-3" />}
+          {overdue ? <AlertCircle className="size-2.5" /> : <Calendar className="size-2.5" />}
           {fmtDate(job.deadline)}
         </div>
       )}

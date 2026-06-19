@@ -29,6 +29,7 @@ import { cn } from "@/lib/utils";
 import { CommandPalette, CommandTrigger } from "@/components/command-palette";
 import { NotificationsBell } from "@/components/notifications-bell";
 import { PageTransition } from "@/components/page-transition";
+import { QuickDock } from "@/components/quick-dock";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -90,21 +91,22 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen flex w-full">
       <CommandPalette open={paletteOpen} setOpen={setPaletteOpen} />
+      <QuickDock />
 
-      <aside className="hidden md:flex flex-col w-64 bg-sidebar border-r border-sidebar-border">
-        <div className="h-16 flex items-center gap-3 px-4 border-b border-sidebar-border">
-          <div className="size-9 rounded-lg gradient-industrial flex items-center justify-center">
-            <Factory className="size-5 text-primary-foreground" />
+      <aside className="hidden md:flex flex-col w-64 glass-panel border-r border-border/80 m-4 rounded-xl shadow-[var(--shadow-panel)] sticky top-4 h-[calc(100vh-2rem)]">
+        <div className="h-16 flex items-center gap-3 px-4 border-b border-border/60">
+          <div className="size-9 rounded-lg gradient-industrial flex items-center justify-center shadow-[var(--shadow-glow)]">
+            <Factory className="size-5 text-primary-foreground animate-float" />
           </div>
           <div className="leading-tight">
-            <div className="font-display font-bold text-sidebar-foreground">MAM Industries</div>
+            <div className="font-display font-bold text-gradient">MAM Industries</div>
             <div className="text-[10px] text-muted-foreground uppercase tracking-widest">
               ERP Console
             </div>
           </div>
         </div>
 
-        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+        <nav className="flex-1 p-3 space-y-1.5 overflow-y-auto">
           {nav.map((item, i) => {
             const active = pathname.startsWith(item.to);
             const Icon = item.icon;
@@ -119,23 +121,23 @@ export function AppShell({ children }: { children: ReactNode }) {
                   to={item.to}
                   preload="intent"
                   className={cn(
-                    "group relative flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-200",
+                    "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                     active
-                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                      : "text-sidebar-foreground/80 hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground hover:translate-x-0.5",
+                      ? "bg-primary/10 text-primary border border-primary/20 shadow-[0_0_12px_rgba(var(--ring),0.05)]"
+                      : "text-muted-foreground hover:bg-accent/40 hover:text-foreground hover:translate-x-0.5",
                   )}
                 >
                   {active && (
                     <motion.span
                       layoutId="sidebar-active-pill"
-                      className="absolute left-0 top-1 bottom-1 w-0.5 rounded-r bg-primary"
+                      className="absolute left-0 top-1 bottom-1 w-1 rounded-r bg-primary shadow-[var(--shadow-glow)]"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
                   <Icon
                     className={cn(
                       "size-4 transition-transform duration-200",
-                      active ? "text-primary" : "group-hover:scale-110",
+                      active ? "text-primary scale-110" : "group-hover:scale-110",
                     )}
                   />
                   {item.label}
@@ -145,13 +147,13 @@ export function AppShell({ children }: { children: ReactNode }) {
           })}
         </nav>
 
-        <div className="p-3 border-t border-sidebar-border text-[10px] text-muted-foreground uppercase tracking-widest">
-          v1.1 · Industrial ERP
+        <div className="p-3 border-t border-border/60 text-[10px] text-muted-foreground uppercase tracking-widest font-mono">
+          v1.2 · Industrial ERP
         </div>
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 border-b border-border bg-card/50 backdrop-blur sticky top-0 z-30 flex items-center gap-3 px-4 md:px-6">
+        <header className="h-16 border-b border-border/80 bg-background/60 backdrop-blur-md sticky top-0 z-30 flex items-center gap-3 px-4 md:px-6 shadow-sm">
           <CommandTrigger onClick={() => setPaletteOpen(true)} />
           <div className="flex-1" />
           <NotificationsBell />

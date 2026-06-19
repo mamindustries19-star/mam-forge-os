@@ -241,16 +241,16 @@ function Dashboard() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.04 }}
-            className="panel p-4 relative overflow-hidden group"
+            className="glass-panel p-4 relative overflow-hidden group hover-lift cursor-pointer border-border/80"
           >
             <div
-              className={`absolute -right-6 -top-6 size-20 rounded-full bg-gradient-to-br ${k.accent} opacity-10 group-hover:opacity-25 transition-opacity`}
+              className={`absolute -right-6 -top-6 size-20 rounded-full bg-gradient-to-br ${k.accent} opacity-10 group-hover:opacity-20 transition-opacity`}
             />
-            <k.icon className="size-4 text-muted-foreground" />
-            <div className="mt-2 text-xl font-bold font-display truncate">
+            <k.icon className="size-4 text-primary" />
+            <div className="mt-2 text-xl font-bold font-display truncate text-foreground group-hover:scale-102 origin-left transition-transform">
               {isLoading ? "…" : k.value}
             </div>
-            <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
+            <div className="text-[9px] uppercase tracking-widest text-muted-foreground mt-1 font-medium">
               {k.label}
             </div>
           </motion.div>
@@ -259,7 +259,7 @@ function Dashboard() {
 
       {/* Revenue trend (large) + Lead sources pie */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="panel p-5 lg:col-span-2">
+        <div className="glass-panel p-5 lg:col-span-2">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display font-semibold flex items-center gap-2">
               <TrendingUp className="size-4 text-success" /> Revenue Trend · Last 30 Days
@@ -277,24 +277,20 @@ function Dashboard() {
                     <stop offset="95%" stopColor={CHART_HEX[0]} stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="oklch(0.30 0.025 250)"
-                  vertical={false}
-                />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                 <XAxis
                   dataKey="label"
-                  tick={{ fontSize: 10, fill: "oklch(0.68 0.02 245)" }}
+                  tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
                   interval={4}
                 />
                 <YAxis
-                  tick={{ fontSize: 10, fill: "oklch(0.68 0.02 245)" }}
+                  tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
                   tickFormatter={(v) => (v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v)}
                 />
                 <Tooltip
                   contentStyle={{
-                    background: "oklch(0.22 0.028 250)",
-                    border: "1px solid oklch(0.30 0.025 250)",
+                    background: "hsl(var(--background))",
+                    border: "1px solid hsl(var(--border))",
                     borderRadius: 6,
                     fontSize: 12,
                   }}
@@ -312,7 +308,7 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="panel p-5">
+        <div className="glass-panel p-5">
           <h2 className="font-display font-semibold mb-4 flex items-center gap-2">
             <Users className="size-4 text-chart-5" /> Lead Sources
           </h2>
@@ -340,8 +336,8 @@ function Dashboard() {
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      background: "oklch(0.22 0.028 250)",
-                      border: "1px solid oklch(0.30 0.025 250)",
+                      background: "hsl(var(--background))",
+                      border: "1px solid hsl(var(--border))",
                       borderRadius: 6,
                       fontSize: 12,
                     }}
@@ -367,8 +363,8 @@ function Dashboard() {
 
       {/* Lead funnel + Production stages */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="panel p-5">
-          <h2 className="font-display font-semibold mb-4 flex items-center gap-2">
+        <div className="glass-panel p-5 hover-lift border-border/80">
+          <h2 className="font-display font-semibold mb-4 flex items-center gap-2 text-foreground">
             <Target className="size-4 text-primary" /> Lead Funnel
           </h2>
           <div className="h-64">
@@ -376,21 +372,24 @@ function Dashboard() {
               <BarChart data={stats?.funnel ?? []} layout="vertical" margin={{ left: 20 }}>
                 <CartesianGrid
                   strokeDasharray="3 3"
-                  stroke="oklch(0.30 0.025 250)"
+                  stroke="hsl(var(--border))"
                   horizontal={false}
                 />
-                <XAxis type="number" tick={{ fontSize: 10, fill: "oklch(0.68 0.02 245)" }} />
+                <XAxis
+                  type="number"
+                  tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
+                />
                 <YAxis
                   type="category"
                   dataKey="status"
-                  tick={{ fontSize: 11, fill: "oklch(0.85 0.01 240)" }}
+                  tick={{ fontSize: 11, fill: "hsl(var(--foreground))" }}
                   width={110}
                 />
                 <Tooltip
                   contentStyle={{
-                    background: "oklch(0.22 0.028 250)",
-                    border: "1px solid oklch(0.30 0.025 250)",
-                    borderRadius: 6,
+                    background: "hsl(var(--background))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: 8,
                     fontSize: 12,
                   }}
                 />
@@ -404,39 +403,35 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="panel p-5">
+        <div className="glass-panel p-5 hover-lift border-border/80">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-display font-semibold flex items-center gap-2">
+            <h2 className="font-display font-semibold flex items-center gap-2 text-foreground">
               <Factory className="size-4 text-warning" /> Production Stages
             </h2>
-            <Link to="/jobs" className="text-xs text-primary hover:underline">
+            <Link to="/jobs" className="text-xs text-primary hover:underline font-medium">
               Open Kanban →
             </Link>
           </div>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={stats?.stageDist ?? []}>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="oklch(0.30 0.025 250)"
-                  vertical={false}
-                />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
                 <XAxis
                   dataKey="stage"
-                  tick={{ fontSize: 9, fill: "oklch(0.68 0.02 245)" }}
+                  tick={{ fontSize: 9, fill: "hsl(var(--muted-foreground))" }}
                   angle={-20}
                   textAnchor="end"
                   height={60}
                 />
                 <YAxis
-                  tick={{ fontSize: 10, fill: "oklch(0.68 0.02 245)" }}
+                  tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }}
                   allowDecimals={false}
                 />
                 <Tooltip
                   contentStyle={{
-                    background: "oklch(0.22 0.028 250)",
-                    border: "1px solid oklch(0.30 0.025 250)",
-                    borderRadius: 6,
+                    background: "hsl(var(--background))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: 8,
                     fontSize: 12,
                   }}
                 />
@@ -449,12 +444,12 @@ function Dashboard() {
 
       {/* Recent leads + Today's follow-ups */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="panel p-5 lg:col-span-2">
+        <div className="glass-panel p-5 lg:col-span-2 hover-lift border-border/80">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-display font-semibold flex items-center gap-2">
+            <h2 className="font-display font-semibold flex items-center gap-2 text-foreground">
               <Activity className="size-4 text-primary" /> Recent Leads
             </h2>
-            <Link to="/leads" className="text-xs text-primary hover:underline">
+            <Link to="/leads" className="text-xs text-primary hover:underline font-medium">
               View all →
             </Link>
           </div>
@@ -462,7 +457,7 @@ function Dashboard() {
             {stats?.recentLeads.length === 0 && (
               <p className="text-sm text-muted-foreground text-center py-6">
                 No leads yet.{" "}
-                <Link to="/leads" className="text-primary">
+                <Link to="/leads" className="text-primary font-medium">
                   Add the first one →
                 </Link>
               </p>
@@ -472,17 +467,21 @@ function Dashboard() {
                 key={l.id}
                 to="/leads/$id"
                 params={{ id: l.id }}
-                className="flex items-center justify-between p-3 rounded-md bg-background/40 hover:bg-accent/40 transition-colors border border-border/50"
+                className="flex items-center justify-between p-3 rounded-lg bg-background/25 hover:bg-accent/30 transition-all border border-border/40 hover:translate-x-0.5"
               >
                 <div className="min-w-0">
-                  <div className="font-medium text-sm truncate">
+                  <div className="font-medium text-sm text-foreground truncate">
                     {l.name}{" "}
-                    <span className="text-muted-foreground text-xs">· {l.company || "—"}</span>
+                    <span className="text-muted-foreground text-xs font-normal">
+                      · {l.company || "—"}
+                    </span>
                   </div>
-                  <div className="text-xs text-muted-foreground font-mono">{l.lead_code}</div>
+                  <div className="text-[10px] text-muted-foreground font-mono mt-0.5">
+                    {l.lead_code}
+                  </div>
                 </div>
                 <span
-                  className={`text-[10px] uppercase tracking-widest px-2 py-1 rounded border ${STATUS_TONE[l.status as keyof typeof STATUS_TONE]}`}
+                  className={`text-[10px] uppercase tracking-widest px-2 py-0.5 rounded border ${STATUS_TONE[l.status as keyof typeof STATUS_TONE]}`}
                 >
                   {LEAD_STATUS_LABELS[l.status as keyof typeof LEAD_STATUS_LABELS]}
                 </span>
@@ -491,8 +490,8 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="panel p-5">
-          <h2 className="font-display font-semibold flex items-center gap-2 mb-4">
+        <div className="glass-panel p-5 hover-lift border-border/80">
+          <h2 className="font-display font-semibold flex items-center gap-2 mb-4 text-foreground">
             <Clock className="size-4 text-warning" /> Today's Follow-ups
           </h2>
           {stats?.todayFollowups.length === 0 ? (
@@ -500,35 +499,38 @@ function Dashboard() {
           ) : (
             <div className="space-y-2">
               {stats?.todayFollowups.slice(0, 5).map((f: any) => (
-                <div key={f.id} className="p-3 rounded-md bg-background/40 border border-border/50">
-                  <div className="text-sm font-medium">{f.leads?.name || "—"}</div>
-                  <div className="text-xs text-muted-foreground truncate">{f.notes}</div>
+                <div key={f.id} className="p-3 rounded-lg bg-background/25 border border-border/40">
+                  <div className="text-sm font-medium text-foreground">{f.leads?.name || "—"}</div>
+                  <div className="text-xs text-muted-foreground truncate mt-0.5">{f.notes}</div>
                 </div>
               ))}
             </div>
           )}
           {stats && stats.missedFollowups.length > 0 && (
-            <div className="mt-4 p-3 rounded-md bg-destructive/10 border border-destructive/30">
+            <div className="mt-4 p-3 rounded-lg bg-destructive/10 border border-destructive/25">
               <div className="text-xs font-semibold text-destructive uppercase tracking-widest">
                 ⚠ {stats.missedFollowups.length} Missed
               </div>
-              <Link to="/follow-ups" className="text-xs text-destructive hover:underline">
+              <Link
+                to="/follow-ups"
+                className="text-xs text-destructive hover:underline font-medium"
+              >
                 Review missed follow-ups →
               </Link>
             </div>
           )}
-          <div className="mt-4 pt-4 border-t border-border">
-            <h3 className="text-[11px] uppercase tracking-widest text-muted-foreground mb-2">
+          <div className="mt-4 pt-4 border-t border-border/60">
+            <h3 className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2 font-semibold">
               Upcoming
             </h3>
             {stats?.upcoming.length === 0 ? (
               <p className="text-xs text-muted-foreground">Nothing scheduled.</p>
             ) : (
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 {stats?.upcoming.slice(0, 4).map((f: any) => (
                   <div key={f.id} className="flex items-center justify-between text-xs">
-                    <span className="truncate">{f.leads?.name}</span>
-                    <span className="font-mono text-muted-foreground">{fmtDate(f.due_date)}</span>
+                    <span className="truncate text-muted-foreground">{f.leads?.name}</span>
+                    <span className="font-mono text-foreground">{fmtDate(f.due_date)}</span>
                   </div>
                 ))}
               </div>
